@@ -1,60 +1,401 @@
 {
-    "error": "render_error",
-    "reason": "function raised error: (new TypeError("
-    config is undefined ", "
-    lists.live ", 1)) 
-    stacktrace: ([object Object], [object Object]) @lists.live: 1
-    runList(function(head, req) {
-        start({
-            headers: {
-                'content-type': \ "text/html"
-            }
-        });
-        var mustache = require("lib/mustache"),
-            template = this.templates['live.html'],
-            config = this.config,
-            locales = this.resources["locales_" + config.locale];
-        var data = { scoreboard: config.scoreboard, players: [] };
-        for (var key in locales) { data["locales." + key] = locales[key]; }
-        var row;
-        while ((row = getRow())) { data.players.push(row.value); }
-        data.players.sort(function(a, b) {
-            return a.score > b.score ? -1 : a.score < b.score ? 1 : 0; });
-        data.players.length > 10 && (data.players.length = 10);
-        var pos = 0,
-            prev;
-        for (var i = 0; i < data.players.length; ++i) {
-            var player = data.players[i];++pos;
-            if (player.score != prev) { player.position = pos; }
-            prev = player.score; }
-        return mustache.to_html(template, data);
-    }
-
-
-    , [object Object], [object Array]) @ / usr / local / Cellar / couchdb / 1.6 .1 _6 / share / couchdb / server / main.js: 989(function(head, req) {
-        start({
-            headers: {
-                'content-type': \ "text/html"
-            }
-        });
-        var mustache = require("lib/mustache"),
-            template = this.templates['live.html'],
-            config = this.config,
-            locales = this.resources["locales_" + config.locale];
-        var data = { scoreboard: config.scoreboard, players: [] };
-        for (var key in locales) { data["locales." + key] = locales[key]; }
-        var row;
-        while ((row = getRow())) { data.players.push(row.value); }
-        data.players.sort(function(a, b) {
-            return a.score > b.score ? -1 : a.score < b.score ? 1 : 0; });
-        data.players.length > 10 && (data.players.length = 10);
-        var pos = 0,
-            prev;
-        for (var i = 0; i < data.players.length; ++i) {
-            var player = data.players[i];++pos;
-            if (player.score != prev) { player.position = pos; }
-            prev = player.score; }
-        return mustache.to_html(template, data);
-
-        
-    }, [object Object], [object Array]) @ / usr / local / Cellar / couchdb / 1.6 .1 _6 / share / couchdb / server / main.js: 1036("_design/league", [object Array], [object Array]) @ / usr / local / Cellar / couchdb / 1.6 .1 _6 / share / couchdb / server / main.js: 1517() @ / usr / local / Cellar / couchdb / 1.6 .1 _6 / share / couchdb / server / main.js: 1562 @ / usr / local / Cellar / couchdb / 1.6 .1 _6 / share / couchdb / server / main.js: 1573 " }
+   "_id": "_design/league",
+   "_rev": "20-8ab27827a1833b0bf4595cc3f415c8fe",
+   "language": "javascript",
+   "config": {
+       "locale": "en_US",
+       "cdn": "http://localhost",
+       "rev": "dev",
+       "ga": "",
+       "server": {
+           "port": 3000,
+           "socketport": 3001
+       },
+       "socketconf": {
+           "host": "localhost",
+           "port": 3001
+       },
+       "couchdb": {
+           "user": "",
+           "password": "",
+           "host": "127.0.0.1",
+           "port": 5984,
+           "database": "digitalfoosball"
+       },
+       "scoreboard": {
+           "home": "Yellow",
+           "visitors": "Black",
+           "inverted": false
+       },
+       "ruleset": "default",
+       "twitter": {
+           "userId": "",
+           "hashtags": [
+               "df"
+           ],
+           "consumerKey": "",
+           "consumerSecret": "",
+           "accessToken": "",
+           "accessTokenSecret": ""
+       }
+   },
+   "resources": {
+       "locales_en_US": {
+           "guide.league.text4": "On the right-hand side there is a history of your last matches.",
+           "live.top10.fulltable": "Show full table",
+           "user.registered": "Registered since",
+           "guide.app.text1": "The webapp is the digital interface for the foosball table. You can use it as a handy scoreboard and set up a game for the league.",
+           "statistic.victories.home": "Yellow",
+           "guide.app.text3": "Once you'll start a game you'll see the scoreboard. By pressing \"Undo\" you can revoke goals, \"Cancel\" rescinds the game. Once any side scores the 6th goal, the game is over and the app will show you a short summary.",
+           "guide.app.text2": "Open the app on your smartphone (you can find the address on the infosheet) and decide: \"Quick Start\" simply starts the scoreboard, your game will not be recorded. If you want to compete in the league, choose either \"1 vs 1\" or \"2 vs 2\" and enter your usernames. You can pick any name you want, only it must not contain spaces. If you use your twitter name, your avatar will be shown within the league. Furthermore you'll get an @mention after each game you carry out. So please only use your own twitter account; Fair play! twitternames must begin with an @. You ain't got no twitter, but still wan't an avatar? Simply set up an account with twitter. ;) In both cases you will be added to the league after you've finished your first game.",
+           "guide.app.text5": "The app always shows the current state of the table. If you open the app and a game is already in progress, you'll see the scoreboard immediately. This means you can see if someone is playing and how they perform - from anywhere around the globe. So please don't cancel a game you didn't start. The Fair play appeal applies here as well.",
+           "statistic.stats.total.games": "Total matches",
+           "table.badge.speedy": "Lightning bolt",
+           "statistic.games.date": "Date",
+           "statistic.stats.players.loser": "Worst defense",
+           "user.rank": "Rank",
+           "table.badge.patience": "King of coffee",
+           "statistic.goals.hl": "Goals",
+           "statistic.victories.hl": "Wins",
+           "user.games.date": "Date",
+           "table.badge.hattrik.message": "scored 3 times in 30 seconds",
+           "statistic.stats.players.mostactive": "Most matches played",
+           "global.title": "Foosball League",
+           "table.badge.hunter": "Fighter",
+           "index.mainnav.table": "Table",
+           "statistic.started.start": "League started on",
+           "user.goals.conceded": "Goals conceded",
+           "user.statistic.hl": "Chart (Score)",
+           "statistic.games.nav.lastgames": "Recent matches",
+           "user.points": "Pts",
+           "statistic.stats.total.goals": "Total goals",
+           "statistic.durationpergame": "Duration",
+           "user.goals.hl": "Goals",
+           "user.games.nav.lastmonth": "Last month",
+           "user.games.hl": "Matches",
+           "table.badge.hattrik": "Hattrick",
+           "statistic.gamesperday": "Matches per day",
+           "table.badge.hunter.message": "trailed by 5 goals and won finally",
+           "statistic.stats.players.topscorer": "Top scorer",
+           "user.games.lost": "lost",
+           "locale": "en_US",
+           "table.league.col.header.diff": "Diff",
+           "user.challenger.rank": "Rank",
+           "statistic.stats.players.topscorer.unit": "Goals",
+           "statistic": "Foosball Statistics",
+           "guide.league.li1": "Nemesis: To whom you lost the most matches.",
+           "user.games.won": "won",
+           "guide.league.li3": "Challenge: Who is next up in the table.",
+           "index.metanav.guide": "Guide",
+           "index.mainnav.live": "Live Match",
+           "table.league.col.header.victories": "Wins",
+           "table.league.col.header.defeats": "Defeats",
+           "guide.app.text4": "From here you can start another game with changeover or simply return to the main screen.",
+           "index.metanav.tos": "ToS",
+           "table.league.col.header.goals": "Goals",
+           "statistic.durationperday.unit": "Min",
+           "index.metanav.info": "About us",
+           "statistic.goals.visitors": "Black",
+           "table.league.col.header.points": "Points",
+           "table.badge.speedy.message": "Scored quickest after tingler",
+           "user.buddy.won": "won",
+           "user.graph.hl": "Recent shape",
+           "statistic.stats.players.loser.unit": "Goals",
+           "user.games.nav.lastgames": "Recent matches",
+           "user.nemesis.hl": "Nemesis",
+           "live.top10": "Top 10 Players",
+           "table.league": "League overview",
+           "user.goals.scored": "Goals",
+           "index.mainnav.graph": "Graph",
+           "guide.rating.text2": "All in all this will keep the league more fair and more exciting.",
+           "guide.rating.h1": "Scoring",
+           "table.badge.patience.message": "Won the longest match",
+           "guide.league.text2": "On \"Table\" you can see the whole table. Every Competitor is listed here with a summary of his tabular values. Furthermore you can see a list of who owns the badges.",
+           "table.badge.lantern.message": "Being on the bottom of the league for longest time",
+           "statistic.stats.total.days": "Total days",
+           "index.mainnav.statistic": "Statistics",
+           "user.challenger.hl": "Challenge",
+           "guide.league.text5": "On \"Statistics\" you can find various pieces of information about the league as a whole.",
+           "table.badge.fan": "Everybody's darling",
+           "user.buddy.hl": "Bosom buddy",
+           "user.games.points": "Pts",
+           "tos.h1": "Terms of Service",
+           "statistic.durationpergame.unit": "Sec",
+           "guide.league.li2": "Bosom buddy: With whom you've performed the best.",
+           "statistic.durationperday": "Time per day",
+           "guide.league.h1": "The league",
+           "statistic.stats.players.days": "Players",
+           "tos.text": "“This website uses Google Analytics, a web analytics service provided by Google, Inc. (“Google”).  Google Analytics uses “cookies”, which are text files placed on your computer, to help the website analyze how users use the site. The information generated by the cookie about your use of the website (including your IP address) will be transmitted to and stored by Google on servers in the United States . Google will use this information for the purpose of evaluating your use of the website, compiling reports on website activity for website operators and providing other services relating to website activity and internet usage.  Google may also transfer this information to third parties where required to do so by law, or where such third parties process the information on Google's behalf. Google will not associate your IP address with any other data held by Google.  You may refuse the use of cookies by selecting the appropriate settings on your browser, however please note that if you do this you may not be able to use the full functionality of this website.  By using this website, you consent to the processing of data about you by Google in the manner and for the purposes set out above.”",
+           "statistic.goals.home": "Yellow",
+           "table.badges": "Badges",
+           "table.badge.lantern": "Underdog",
+           "table.league.col.header.player": "Player",
+           "table.badge.fan.message": "most comments during one match",
+           "guide.rating.text1": "The points are awarded according to the Elo-System. In simple words, you steal each others points. The stronger your opponent, the more points you get. Conversely this implies, winning against a weak opponent only gains you a few points. Moreover the frequency of your matches will be considered: the more often you play, the less points will be awarded.",
+           "statistic.victories.visitors": "Black",
+           "user.games.nav.allgames": "All players",
+           "statistic.started.end": "",
+           "statistic.stats.players.mostactive.unit": "Matches",
+           "guide.league.text3": "Klickt Ihr auf einem Usernamen, seht ihr die Einzelansicht und verschiedene statistische Auswertung:",
+           "user.nemesis.lost": "lost",
+           "guide.app.h1": "The app",
+           "guide.league.text1": "On the startscreen you'll see a short history of the last games. If a game is in progress, the scoreboard will fade in.The Top 10 players of the league are shown here as well."
+       },
+       "locales_de_DE": {
+           "guide.league.text4": "An der Seite werden Eure letzten Spiele aufgeführt.",
+           "live.top10.fulltable": "Vollständige Tabelle anzeigen",
+           "user.registered": "Registriert seit",
+           "guide.app.text1": "Die WebApp ist das digitale Interface des Kickertisches. Du kannst sie als praktisches Scoreboard benutzen oder ein Spiel für die Liga starten.",
+           "statistic.victories.home": "Weiß",
+           "guide.app.text3": "Nach dem Starten des Spiels seht ihr das Scoreboard. Mit \"Undo\" könnt Tore widerrufen, mit \"Abbrechen\" das Spiel stornieren. Die App zählt ein Spiel beim 6. Tor für eine Partei als gewonnen und zeigt dann die Spielzusammenfassung.",
+           "guide.app.text2": "Ruf die App auf Deinem Smartphone auf (Adresse findest auf der Infotafel) und entscheide Dich: Mit \"Quickstart\" startest Du das Scoreboard und Ihr spielt nur für Euch. Wollt Ihr ein Ligaspiel machen, wählt ein Einzelspiel, respektive ein Teamspiel und gebt Eure Usernamen an. Ihr könnt Euren Usernamen frei wählen, er darf nur keine Leerzeichen enthalten. Wenn Ihr Euren Twitternamen als Usernamen verwendet, wird in der Liga Euer Avatarbild angezeigt. Außerdem bekommt ihr nach jedem Eurer Spiele eine @Mention mit dem Ergebnis. Daher verwendet auch bitte immer nur Euren eigenen Twitternamen; Fair Play! Twitternamen müssen mit einem @ beginnen. Wenn ihr keinen Twitter-Account habt, aber dennoch ein Avatarbild haben möchtet - dann legt einen Twitter-Account an. ;) In beiden Fällen werdet ihr automatisch beim ersten Spiel in der Liga registriert.",
+           "guide.app.text5": "Die App zeigt immer den Status des Kickertisches an. Wenn ihr die App startet und jemand spielt bereits an dem Tisch, wird Euch gleich das Scoreboard angezeigt. Ihr könnt also von überall auf der Welt sehen, ob und wie jemand spielt. Daher solltet Ihr auch keine fremden Spiele abbrechen. Auch gilt der Fair Play Aufruf.",
+           "statistic.stats.total.games": "Spiele gesamt",
+           "table.badge.speedy": "Speedy",
+           "statistic.games.date": "Datum",
+           "statistic.stats.players.loser": "Schwächste Abwehr",
+           "user.rank": "Platz",
+           "table.badge.patience": "\"Der Geduldige\"",
+           "statistic.goals.hl": "Tore",
+           "statistic.victories.hl": "Siege",
+           "user.games.date": "Datum",
+           "table.badge.hattrik.message": "3 Tore in 30 Sekunden",
+           "statistic.stats.players.mostactive": "Aktivster Spieler",
+           "statistic.durationperday": "Dauer pro Tag",
+           "table.badge.hunter": "Jagdinstinkt",
+           "index.mainnav.table": "Tabelle",
+           "statistic.started.start": "Liga am",
+           "user.goals.conceded": "Gegentore",
+           "user.statistic.hl": "Chart (Punkte)",
+           "statistic.games.nav.lastgames": "Letzte Spiele",
+           "user.points": "Pkt.",
+           "statistic.stats.total.goals": "Tore gesamt",
+           "statistic.durationpergame": "Spieldauer",
+           "user.goals.hl": "Tore",
+           "user.games.nav.lastmonth": "Letzter Monat",
+           "user.games.hl": "Spiele",
+           "table.badge.hattrik": "Hattrick König",
+           "statistic.gamesperday": "Spiele pro Tag",
+           "table.badge.hunter.message": "einen 0:5 Rückstand aufgeholt",
+           "statistic.stats.players.topscorer": "Torschützenkönig",
+           "user.games.lost": "Verloren",
+           "locale": "de_DE",
+           "table.league.col.header.diff": "Diff",
+           "user.challenger.rank": "Platz",
+           "statistic.stats.players.topscorer.unit": "Tore",
+           "statistic": "Kickerstatistik",
+           "guide.league.li1": "Angstgegner: Gegen wen habt Ihr am häufigsten verloren.",
+           "user.games.won": "Gewonnen",
+           "guide.league.li3": "Herausforderung: Wer steht in der Tabelle über Euch.",
+           "index.metanav.guide": "Anleitung",
+           "index.mainnav.live": "Live Spiel",
+           "table.league.col.header.victories": "Siege",
+           "table.league.col.header.defeats": "Niederl",
+           "guide.app.text4": "Von dort aus könnt ihr ein Rückspiel mit Seitenwechsel beginnen oder zurück zur Spielauswahl gelangen.",
+           "index.metanav.tos": "DSE",
+           "table.league.col.header.goals": "Tore",
+           "statistic.durationperday.unit": "Min",
+           "index.metanav.info": "Über uns",
+           "statistic.goals.visitors": "Schwarz",
+           "table.league.col.header.points": "Punkte",
+           "table.badge.speedy.message": "Das schnellste Tor nach Anpfiff",
+           "user.buddy.won": "gewonnen",
+           "user.graph.hl": "Aktuelle Form",
+           "statistic.stats.players.loser.unit": "Tore",
+           "user.games.nav.lastgames": "Letzte Spiele",
+           "user.nemesis.hl": "Angstgegner",
+           "live.top10": "Top-10 der Liga",
+           "table.league": "Liga-Übersicht",
+           "user.goals.scored": "Tore",
+           "guide.rating.text2": "Unterm Strich wird die Liga dadurch fairer und spannender.",
+           "guide.rating.h1": "Punktesystem",
+           "table.badge.patience.message": "Das längste Spiel für sich entschieden",
+           "guide.league.text2": "Unter dem Navigationspunkt Tabelle findet Ihr die gesamte Ligatabelle. Zu jedem User werden die summierten Ergebnisse aller Spiele angezeigt. Außerdem gibt es eine Übersicht, wer die Badges trägt.",
+           "table.badge.lantern.message": "am längsten auf dem letzten Platz",
+           "statistic.stats.total.days": "Spieltage",
+           "guide.league.text1": "Auf der Startseite wird ein Verlauf der letzten Spiele angezeigt. Spielt jemand gerade an dem Kickertisch, wird das Live-Scoreboard eingeblendet. Außerdem seht ihr die Top-10 Plätze der Liga.",
+           "user.challenger.hl": "Herausforderung",
+           "guide.league.text5": "Auf der Statistikstartseite werden verschiedene Infos zur Liga zusammengefasst dargestellt.",
+           "table.badge.fan": "Fan King",
+           "user.buddy.hl": "Kicker Buddy",
+           "user.games.points": "Pkt.",
+           "tos.h1": "Datenschutzerklärung",
+           "statistic.durationpergame.unit": "Sek",
+           "guide.league.li2": "Kickerbuddy: Mit wem spielt ihr am häufigsten.",
+           "global.title": "KickerLiga",
+           "guide.league.h1": "Die Liga",
+           "statistic.stats.players.days": "Angemeldete Spieler",
+           "tos.text": "„Diese Website benutzt Google Analytics, einen Webanalysedienst der Google Inc. („Google“). Google Analytics verwendet sog. „Cookies“, Textdateien, die auf Ihrem Computer gespeichert werden und die eine Analyse der Benutzung der Website durch Sie ermöglichen. Die durch den Cookie erzeugten Informationen über Ihre Benutzung dieser Website werden in der Regel an einen Server von Google in den USA übertragen und dort gespeichert. Im Falle der Aktivierung der IP-Anonymisierung auf dieser Webseite, wird Ihre IP-Adresse von Google jedoch innerhalb von Mitgliedstaaten der Europäischen Union oder in anderen Vertragsstaaten des Abkommens über den Europäischen Wirtschaftsraum zuvor gekürzt. Nur in Ausnahmefällen wird die volle IP-Adresse an einen Server von Google in den USA übertragen und dort gekürzt. Im Auftrag des Betreibers dieser Website wird Google diese Informationen benutzen, um Ihre Nutzung der Website auszuwerten, um Reports über die Websiteaktivitäten zusammenzustellen und um weitere mit der Websitenutzung und der Internetnutzung verbundene Dienstleistungen gegenüber dem Websitebetreiber zu erbringenDie im Rahmen von Google Analytics von Ihrem Browser übermittelte IP-Adresse wird nicht mit anderen Daten von Google zusammengeführt. Sie können die Speicherung der Cookies durch eine entsprechende Einstellung Ihrer Browser-Software verhindern; wir weisen Sie jedoch darauf hin, dass Sie in diesem Fall gegebenenfalls nicht sämtliche Funktionen dieser Website vollumfänglich werden nutzen können. Sie können darüber hinaus die Erfassung der durch das Cookie erzeugten und auf Ihre Nutzung der Website bezogenen Daten (inkl. Ihrer IP-Adresse) an Google sowie die Verarbeitung dieser Daten durch Google verhindern, indem sie das unter dem folgenden Link verfügbare Browser-Plugin herunterladen und installieren: http://tools.google.com/dlpage/gaoptout?hl=de.“",
+           "statistic.goals.home": "Weiß",
+           "table.badges": "Badges",
+           "table.badge.lantern": "Laternenträger",
+           "table.league.col.header.player": "Spieler",
+           "table.badge.fan.message": "am meisten Kommentare in einem Spiel",
+           "guide.rating.text1": "Die Punkte werden nach dem Elo-System vergeben. Vereinfacht heißt das, dass Ihr Euch gegenseitig Punkte klaut. Je stärker Euer Gegner ist, umso mehr Punkte könnt Ihr verdienen. Umgekehrt heißt das aber auch, dass Siege gegen schwächere Gegner auch nur wenige Punkte bringen. Außerdem wird die Spielhäufigkeit der Spieler berücksichtig: je häufiger Ihr spielt, desto weniger Punkte werden gutgeschrieben.",
+           "statistic.victories.visitors": "Schwarz",
+           "user.games.nav.allgames": "Alle Spiele",
+           "statistic.started.end": "gestartet",
+           "statistic.stats.players.mostactive.unit": "Spiele",
+           "guide.league.text3": "Klickt Ihr auf einem Usernamen, seht ihr die Einzelansicht und verschiedene statistische Auswertung:",
+           "user.nemesis.lost": "verloren",
+           "guide.app.h1": "Die App",
+           "index.mainnav.statistic": "Statistik"
+       },
+       "couchapp": {
+           "signatures": {
+           },
+           "objects": {
+           },
+           "manifest": [
+               "locales_de_DE.json",
+               "locales_en_US.json"
+           ]
+       }
+   },
+   "filters": {
+       "ranked_games": "function(doc, req) {  return doc.type === 'game' && doc.players.home.length && doc.players.visitors.length && doc.ranked;};",
+       "unranked_games": "function(doc, req) {  return doc.type === 'game' && doc.players.home.length && doc.players.visitors.length && !doc.ranked;};"
+   },
+   "lib": {
+       "mustache": "var Mustache = function() {   var Renderer = function() {};    Renderer.prototype = {     otag: \"{{\",     ctag: \"}}\",     pragmas: {},     buffer: [],     pragmas_implemented: {       \"IMPLICIT-ITERATOR\": true     },     context: {},      render: function(template, context, partials, in_recursion) {              if(!in_recursion) {         this.context = context;         this.buffer = [];        }               if(!this.includes(\"\", template)) {         if(in_recursion) {           return template;         } else {           this.send(template);           return;         }       }        template = this.render_pragmas(template);       var html = this.render_section(template, context, partials);       if(in_recursion) {         return this.render_tags(html, context, partials, in_recursion);       }        this.render_tags(html, context, partials, in_recursion);     },      /*       Sends parsed lines     */     send: function(line) {       if(line != \"\") {         this.buffer.push(line);       }     },      /*       Looks for %PRAGMAS     */     render_pragmas: function(template) {              if(!this.includes(\"%\", template)) {         return template;       }        var that = this;       var regex = new RegExp(this.otag + \"%([\\\\w-]+) ?([\\\\w]+=[\\\\w]+)?\" +             this.ctag);       return template.replace(regex, function(match, pragma, options) {         if(!that.pragmas_implemented[pragma]) {           throw({message:              \"This implementation of mustache doesn't understand the '\" +             pragma + \"' pragma\"});         }         that.pragmas[pragma] = {};         if(options) {           var opts = options.split(\"=\");           that.pragmas[pragma][opts[0]] = opts[1];         }         return \"\";                });     },      /*       Tries to find a partial in the curent scope and render it     */     render_partial: function(name, context, partials) {       name = this.trim(name);       if(!partials || partials[name] === undefined) {         throw({message: \"unknown_partial '\" + name + \"'\"});       }       if(typeof(context[name]) != \"object\") {         return this.render(partials[name], context, partials, true);       }       return this.render(partials[name], context[name], partials, true);     },      /*       Renders inverted (^) and normal (#) sections     */     render_section: function(template, context, partials) {       if(!this.includes(\"#\", template) && !this.includes(\"^\", template)) {         return template;       }        var that = this;              var regex = new RegExp(this.otag + \"(\\\\^|\\\\#)\\\\s*(.+)\\\\s*\" + this.ctag +               \"\\n*([\\\\s\\\\S]+?)\" + this.otag + \"\\\\/\\\\s*\\\\2\\\\s*\" + this.ctag +               \"\\\\s*\", \"mg\");               return template.replace(regex, function(match, type, name, content) {         var value = that.find(name, context);         if(type == \"^\") {            if(!value || that.is_array(value) && value.length === 0) {                          return that.render(content, context, partials, true);           } else {             return \"\";           }         } else if(type == \"#\") {            if(that.is_array(value)) {              return that.map(value, function(row) {               return that.render(content, that.create_context(row),                 partials, true);             }).join(\"\");           } else if(that.is_object(value)) {              return that.render(content, that.create_context(value),               partials, true);           } else if(typeof value === \"function\") {                          return value.call(context, content, function(text) {               return that.render(text, context, partials, true);             });           } else if(value) {              return that.render(content, context, partials, true);           } else {             return \"\";           }         }       });     },      /*       Replace {{foo}} and friends with values from our view     */     render_tags: function(template, context, partials, in_recursion) {              var that = this;        var new_regex = function() {         return new RegExp(that.otag + \"(=|!|>|\\\\{|%)?([^\\\\/#\\\\^]+?)\\\\1?\" +           that.ctag + \"+\", \"g\");       };        var regex = new_regex();       var tag_replace_callback = function(match, operator, name) {         switch(operator) {         case \"!\":            return \"\";         case \"=\":            that.set_delimiters(name);           regex = new_regex();           return \"\";         case \">\":            return that.render_partial(name, context, partials);         case \"{\":            return that.find(name, context);         default:            return that.escape(that.find(name, context));         }       };       var lines = template.split(\"\\n\");       for(var i = 0; i < lines.length; i++) {         lines[i] = lines[i].replace(regex, tag_replace_callback, this);         if(!in_recursion) {           this.send(lines[i]);         }       }        if(in_recursion) {         return lines.join(\"\\n\");       }     },      set_delimiters: function(delimiters) {       var dels = delimiters.split(\" \");       this.otag = this.escape_regex(dels[0]);       this.ctag = this.escape_regex(dels[1]);     },      escape_regex: function(text) {              if(!arguments.callee.sRE) {         var specials = [           '/', '.', '*', '+', '?', '|',           '(', ')', '[', ']', '{', '}', '\\\\'         ];         arguments.callee.sRE = new RegExp(           '(\\\\' + specials.join('|\\\\') + ')', 'g'         );       }       return text.replace(arguments.callee.sRE, '\\\\$1');     },      /*       find `name` in current `context`. That is find me a value       from the view object     */     find: function(name, context) {       name = this.trim(name);               function is_kinda_truthy(bool) {         return bool === false || bool === 0 || bool;       }        var value;       if(is_kinda_truthy(context[name])) {         value = context[name];       } else if(is_kinda_truthy(this.context[name])) {         value = this.context[name];       }        if(typeof value === \"function\") {         return value.apply(context);       }       if(value !== undefined) {         return value;       }              return \"\";     },            /* includes tag */     includes: function(needle, haystack) {       return haystack.indexOf(this.otag + needle) != -1;     },      /*       Does away with nasty characters     */     escape: function(s) {       s = String(s === null ? \"\" : s);       return s.replace(/&(?!\\w+;)|[\"'<>\\\\]/g, function(s) {         switch(s) {         case \"&\": return \"&amp;\";         case \"\\\\\": return \"\\\\\\\\\";         case '\"': return '&quot;';         case \"'\": return '&#39;';         case \"<\": return \"&lt;\";         case \">\": return \"&gt;\";         default: return s;         }       });     },           create_context: function(_context) {       if(this.is_object(_context)) {         return _context;       } else {         var iterator = \".\";         if(this.pragmas[\"IMPLICIT-ITERATOR\"]) {           iterator = this.pragmas[\"IMPLICIT-ITERATOR\"].iterator;         }         var ctx = {};         ctx[iterator] = _context;         return ctx;       }     },      is_object: function(a) {       return a && typeof a == \"object\";     },      is_array: function(a) {       return Object.prototype.toString.call(a) === '[object Array]';     },      /*       Gets rid of leading and trailing whitespace     */     trim: function(s) {       return s.replace(/^\\s*|\\s*$/g, \"\");     },      /*       Why, why, why? Because IE. Cry, cry cry.     */     map: function(array, fn) {       if (typeof array.map == \"function\") {         return array.map(fn);       } else {         var r = [];         var l = array.length;         for(var i = 0; i < l; i++) {           r.push(fn(array[i]));         }         return r;       }     }   };    return({     name: \"mustache.js\",     version: \"0.3.1-dev\",      /*       Turns a template and view into HTML     */     to_html: function(template, view, partials, send_fun) {       var renderer = new Renderer();       if(send_fun) {         renderer.send = send_fun;       }       renderer.render(template, view, partials);       if(!send_fun) {         return renderer.buffer.join(\"\\n\");       }     }   }); }();  exports.name = Mustache.name; exports.version = Mustache.version;  exports.to_html = function() {   return Mustache.to_html.apply(this, arguments); };"
+   },
+   "lists": {
+       "feed": "function(head, req) {  start({'headers': {'content-type': 'text/html'}});  var mustache = require('lib/mustache'),      template = this.templates['feed.html'],      config = this.config,      locales = this.resources['locales_' + config.locale];  var data = {    feeds: []  };  for (var key in locales) {    data['locales.' + key] = locales[key];  }    var format2digits = function(d) {    return (d > 9 ? ' : '0') + d;  };    var formatTime = function(t) {    var d = new Date(t);    return [format2digits(d.getHours()), format2digits(d.getMinutes())].join(':');  }    var formatTimespan = function(t1, t2) {    var d = new Date(t2 - t1);    return format2digits(d.getMinutes()) + ' min, ' + format2digits(d.getSeconds()) + ' sec';  };  var row;  while (row = getRow()) {    var game = row.value;    feed = game.feed,    events = [];        for (var i = 0; i < feed.length; ++i) {      var entry = feed[i];      entry.time = {        start: formatTime(game.start),        goal: formatTimespan(game.start, entry.time),        foul: formatTimespan(game.start, entry.time),        end: formatTime(game.end),        abort: formatTime(game.end)      }[entry.type];      events.push(entry);    }    data.feeds.push({events: events.reverse()});  }  return mustache.to_html(template, data);};",
+       "live": "function(head, req) {  start({'headers': {'content-type': 'text/html'}});  var mustache = require('lib/mustache'),      template = this.templates['live.html'],      config = this.config,      locales = this.resources['locales_' + config.locale];  var data = {    scoreboard: config.scoreboard,    players: []  };  for (var key in locales) {    data['locales.' + key] = locales[key];  }    var row;  while (row = getRow()) {    data.players.push(row.value);  }  data.players.sort(function(a, b) {    return (a.score > b.score) ? -1 : ((a.score < b.score) ? 1 : 0);  });  data.players.length > 10 && (data.players.length = 10);  var pos = 0,      prev;  for (var i = 0; i < data.players.length; ++i) {    var player = data.players[i];    ++pos;    if (player.score != prev) {      player.position = pos;    }    prev = player.score;  }  return mustache.to_html(template, data);};",
+       "perfectGame": "function(head, req) {  start({'headers': {'content-type': 'text/html'}});    var mustache = require('lib/mustache'),      template = this.templates['perfectGames.html'],      config = this.config,      locales = this.resources['locales_' + config.locale];  var data = {    games: []  };  var row;  while (row = getRow()) {    data.games.push(row.value);  }  return mustache.to_html(template,{data: JSON.stringify(data)});};",
+       "table": "function(head, req) {  start({'headers': {'content-type': 'text/html'}});    var mustache = require('lib/mustache'),      template = this.templates['table.html'],      config = this.config,      locales = this.resources['locales_' + config.locale];  var data = {    players: []  };  for (var key in locales) {    data['locales.' + key] = locales[key];  }  var row;  while (row = getRow()) {    data.players.push(row.value);  }  data.players.sort(function(a, b) {    return (a.score > b.score) ? -1 : ((a.score < b.score) ? 1 : 0);  });  var pos = 0,      prev;    for (var i = 0; i < data.players.length; ++i) {    var player = data.players[i];    ++pos;    if (player.score != prev) {     player.position = pos;    }    prev = player.score;    player.goals.diff = player.goals.scored - player.goals.conceded;  }  return mustache.to_html(template, data);};",
+       "user": "function(head, req) {  start({'headers': {'content-type': 'text/html'}});  var mustache = require('lib/mustache'),      template = this.templates['user.html'],      config = this.config,      locales = this.resources['locales_' + config.locale];  var data = {};  for (var key in locales) {    data['locales.' + key] = locales[key];  }  var players = [];  var scores = [];  var row;  while (row = getRow()) {    var player = row.value;    if (!data.user && player.name === req.query['name']) {      data.user = player;    }    players.push(player);    scores.push(player.score);  }  players.sort(function(a, b) { return (a.score > b.score) ? -1 : ((a.score < b.score) ? 1 : 0); });  scores.sort(function(a, b) { return (a > b) ? -1 : ((a < b) ? 1 : 0); });  if (data.user) {    data.user.rank = scores.indexOf(data.user.score) + 1;    var opponents = [];    for (var name in data.user.opponents) {      var opponent = data.user.opponents[name];      opponent.name = name;      opponents.push(opponent);    }    opponents.sort(function(a, b) { return (a.lost > b.lost) ? -1 : ((a.lost < b.lost) ? 1 : 0); });    data.user.nemesis = opponents[0];    data.user.nemesis.quote = ~~(data.user.nemesis.lost / (data.user.nemesis.won + data.user.nemesis.lost) * 100);    var teammates = [];    for (var name in data.user.teammates) {      var teammate = data.user.teammates[name];      teammate.name = name;      teammates.push(teammate);    }    teammates.sort(function(a, b) { return (a.won > b.won) ? -1 : ((a.won < b.won) ? 1 : 0); });    data.user.buddy = teammates[0];    data.user.buddy && (data.user.buddy.quote = ~~(data.user.buddy.won / (data.user.buddy.won + data.user.buddy.lost) * 100));    var idx = players.indexOf(data.user);    data.user.challenger = (idx - 1 >= 0) ? players[idx - 1] : players[idx + 1];    data.user.challenger.rank = scores.indexOf(data.user.challenger.score) + 1;    var totalgames = data.user.games.won + data.user.games.lost;    data.user.games = {      won: {        amount: data.user.games.won,        percentage: ~~(data.user.games.won / totalgames * 100)      },      lost: {        amount: data.user.games.lost,        percentage: ~~(data.user.games.lost / totalgames * 100)      }    };    var totalgoals = data.user.goals.scored + data.user.goals.conceded;    data.user.goals = {      scored: {        amount: data.user.goals.scored,        percentage: ~~(data.user.goals.scored / totalgoals * 100)      },      conceded: {       amount: data.user.goals.conceded,       percentage: ~~(data.user.goals.conceded / totalgoals * 100)      }    };    var new_graph = [];    for (var i = 0; i < data.user.graph.length; ++i) {      var event = data.user.graph[i];      if (new_graph[i - 1]) {        var old_event = new_graph[new_graph.length - 1],            diff = Math.floor((event.time - old_event.time) / (1000 * 60 * 60 * 24));        for (;diff;--diff, new_graph.push(old_event));      }      new_graph.push(event);    }    var last_event = new_graph[new_graph.length -1];    var diff_today = Math.floor((new Date().getTime() - last_event.time) / (1000 * 60 * 60 * 24));    for (;diff_today;--diff_today, new_graph.push(last_event));    data.user.graph = new_graph.reduce(function(a, b) {      var abs = Math.abs(b.score);      a.high > abs || (a.high = abs);      a.ranks.push(b.score);      return a;    }, { high: 0, ranks: [] });    data.user.graph.high = Math.ceil(data.user.graph.high / 10) * 10;    data.user.graph.low = data.user.graph.high * -1;    var formatDate = function(time) {      var date = new Date(time),          day = date.getDate(),          month = date.getMonth() + 1;      return [day > 9 ? day : '0' + day, month > 9 ? month : '0' + month, date.getFullYear()].join('.');    };    data.user.registered = formatDate(data.user.registered);    data.user.history.map(function(game) {      game.end = formatDate(game.end);      game.players.home.length > 1 || game.players.home.push('');      game.players.visitors.length > 1 || game.players.visitors.push('');      game.score < 0 || (game.score = '+' + game.score);      return game;    });  } else {    data.user = {      name: req.query['name'],      score: 0,      rank: 'n/a',      games: {        won: {          amount: 0,          percentage: 0        },        lost: {          amount: 0,          percentage: 0        }      },      goals: {        scored: {          amount: 0,          percentage: 0        },        conceded: {          amount: 0,          percentage: 0        }      },      graph: {        high: 10,        low: -10,        ranks: []      },      registered: 'n/a'    };  }  return mustache.to_html(template, data);};"
+   },
+   "rewrites": [
+       {
+           "from": "/",
+           "to": "/_show/index",
+           "method": "GET"
+       },
+       {
+           "from": "/live",
+           "to": "/_list/live/players",
+           "method": "GET"
+       },
+       {
+           "from": "/feed",
+           "to": "/_list/feed/ranked_games",
+           "query": {
+               "limit": "5",
+               "descending": "true"
+           }
+       },
+       {
+           "from": "/table",
+           "to": "/_list/table/players",
+           "method": "GET"
+       },
+       {
+           "from": "/statistic",
+           "to": "/_show/statistic/statistic",
+           "method": "GET"
+       },
+       {
+           "from": "/perfectGames",
+           "to": "/_list/perfectGames/perfect_games",
+           "method": "GET"
+       },
+       {
+           "from": "/statistic/:name",
+           "to": "/_list/user/players",
+           "method": "GET",
+           "query": {
+               "name": ":name"
+           }
+       },
+       {
+           "from": "/extensions/js/*",
+           "to": "/*",
+           "method": "GET"
+       },
+       {
+           "from": "/extensions/css/*",
+           "to": "/*",
+           "method": "GET"
+       },
+       {
+           "from": "/guide",
+           "to": "/_show/guide",
+           "method": "GET"
+       },
+       {
+           "from": "/tos",
+           "to": "/_show/tos",
+           "method": "GET"
+       },
+       {
+           "from": "/*",
+           "to": "/*"
+       }
+   ],
+   "shows": {
+       "guide": "function(doc, req) {  var mustache = require('lib/mustache'),      template = this.templates['guide.html'],      config = this.config,      locales = this.resources['locales_' + config.locale],      data = [];  for (var key in locales) {    data['locales.' + key] = locales[key];  }  return {    body: mustache.to_html(template, data)  };};",
+       "index": "function(doc, req) {  var mustache = require('lib/mustache'),      template = this.templates['index.html'],      config = this.config,      locales = this.resources['locales_' + config.locale];  var data = {    production: config.env === 'production',    cdn: config.cdn,    rev: config.rev,    config: JSON.stringify(config)  };  for (var key in locales) {    data['locales.' + key] = locales[key];  }  return {    body: mustache.to_html(template, data)  };};",
+       "statistic": "function(doc, req) {  start({'headers': {'content-type': 'text/html'}});  var mustache = require('lib/mustache'),      template = this.templates['statistic.html'],      config = this.config,      locales = this.resources['locales_' + config.locale];  var data = {    stats: doc  };  for (var key in locales) {    data['locales.' + key] = locales[key];  }  var formatDate = function(time) {    var date = new Date(time),        day = date.getDate(),        month = date.getMonth() + 1;    return [day > 9 ? day : '0' + day, month > 9 ? month : '0' + month, date.getFullYear()].join('.');  };  data.stats.started = formatDate(data.stats.started);  data.stats.avg = {    gamesPerDay: ~~(data.stats.total.games / data.stats.total.days),    durationPerGame: ~~(data.stats.total.duration / data.stats.total.games / 1000),    durationPerDay: ~~(data.stats.total.duration / data.stats.total.days / 1000 / 60)  };  data.stats.goals = {    home: {      amount: data.stats.goals.home,      percentage: ~~(data.stats.goals.home / data.stats.total.goals * 100)    },    visitors: {      amount: data.stats.goals.visitors,      percentage: ~~(data.stats.goals.visitors / data.stats.total.goals * 100)    }  };  data.stats.victories = {    home: {      amount: data.stats.victories.home,      percentage: ~~(data.stats.victories.home / data.stats.total.games * 100)    },    visitors: {      amount: data.stats.victories.visitors,      percentage: ~~(data.stats.victories.visitors / data.stats.total.games * 100)    }  };  data.stats.games.map(function(game) {    game.end = formatDate(game.end);    game.players.home.length > 1 || game.players.home.push('');    game.players.visitors.length > 1 || game.players.visitors.push('');  });  return {    body: mustache.to_html(template, data)  };};",
+       "tos": "function(doc, req) {  var mustache = require('lib/mustache'),      template = this.templates['tos.html'],      config = this.config,      locales = this.resources['locales_' + config.locale],      data = [];  for (var key in locales) {    data['locales.' + key] = locales[key];  }  return {    body: mustache.to_html(template, data)  };};"
+   },
+   "templates": {
+       "feed.html": "{{#feeds}}\n  <ol>\n    {{#events}}\n      <li class=\"{{type}}\">\n        <div>{{time}}</div>\n        <p>{{head}}<br>{{body}}</p>\n      </li>\n    {{/events}}\n  </ol>\n{{/feeds}}",
+       "index.html": "<!DOCTYPE html>\n<html lang=\"{{locales.locale}}\">\n<head>\n  <title>{{locales.global.title}}</title>\n  <meta charset=\"UTF-8\" />\n  <meta name=\"apple-mobile-web-app-capable\" content=\"yes\" />\n  <meta name=\"apple-mobile-web-app-status-bar-style\" content=\"black\" />\n  <meta name=\"viewport\" content=\"width=1024, user-scalable=0, target-densitydpi=device-dpi\" />\n  <meta http-equiv=\"X-UA-Compatible\" content=\"chrome=1\" />\n\n  <!--meta name=\"description\" content=\"🏆\"/-->\n  <meta name=\"robots\" content=\"noindex,nofollow\" />\n\n  <link rel=\"shortcut icon\" href=\"images/favicons/fi_standard.ico\" type=\"image/x-icon\" />\n  <link rel=\"apple-touch-icon\" href=\"images/favicons/fi_apple_touch.png\" />\n\n  <link rel=\"apple-touch-startup-image\" href=\"images/startup/ipad_landscape.png\" media=\"screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape)\" />\n  <link rel=\"apple-touch-startup-image\" href=\"images/startup/ipad_portrait.png\" media=\"screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait)\" />\n  <link rel=\"apple-touch-startup-image\" href=\"images/startup/iphone.png\" media=\"screen and (max-device-width: 320px)\" />\n\n{{#production}}\n  <link rel=\"stylesheet\" type=\"text/css\" href=\"{{#cdn}}{{cdn}}/{{rev}}/league/{{/cdn}}extensions/css/league-min-base64.css\" media=\"screen,projection,print\" />\n{{/production}}\n{{^production}}\n  <link rel=\"stylesheet/less\" type=\"text/css\" href=\"extensions/css/league.less\" media=\"screen,projection,print\" />\n  <script type=\"text/javascript\" src=\"extensions/js/ext/less-1.1.3.min.js\"></script>\n  <script src=\"http://d3js.org/d3.v3.min.js\" charset=\"utf-8\"></script>\n\n{{/production}}\n</head>\n<body id=\"liga-s2-de\">\n  <section id=\"container\">\n    <header>\n      <h1 id=\"logo\"><a href=\"#!/live\">{{locales.global.title}}</a></h1>\n      <nav id=\"metanav\">\n        <a href=\"#!/guide\">{{locales.index.metanav.guide}}</a>\n        <a href=\"http://digitalfoosball.com/\" class=\"js_target\">{{locales.index.metanav.info}}</a>\n        <a href=\"#!/tos\">{{locales.index.metanav.tos}}</a>\n      </nav>\n      <nav id=\"mainnav\">\n        <a href=\"#!/live\">{{locales.index.mainnav.live}}</a>\n        <a href=\"#!/table\">{{locales.index.mainnav.table}}</a>\n        <a href=\"#!/statistic\">{{locales.index.mainnav.statistic}}</a>\n        <a href=\"#!/perfectGames\">{{locales.index.mainnav.graph}}</a>\n      </nav>\n    </header>\n    <section id=\"content\"></section>\n  </section>\n  <!--[if lt IE 10]>\n    <script type=\"text/javascript\" src=\"http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js\"></script>\n    <script type=\"text/javascript\">window.attachEvent(\"onload\", function() {CFInstall.check({mode:\"overlay\"});});</script>\n  <![endif]-->\n\n  <script type=\"text/javascript\">\n    df = (function(df) {\n      df.config = {{{config}}};\n      return df;\n    })(typeof df === \"undefined\" ? {} : df);\n  </script>\n\n{{#production}}\n  <script type=\"text/javascript\" src=\"{{#cdn}}{{cdn}}/{{rev}}/league/{{/cdn}}extensions/js/basic-min.js\"></script>\n{{/production}}\n{{^production}}\n  <script type=\"text/javascript\" src=\"extensions/js/basic.js\"></script>\n  <script type=\"text/javascript\" src=\"extensions/js/loader.js\"></script>\n{{/production}}\n</body>\n</html>",
+       "perfectGames.html": "<!DOCTYPE html>\n<meta charset=\"utf-8\">\n<style>\n\n.node {\n  stroke: #fff;\n  stroke-width: 1.5px;\n}\n\n.link {\n  stroke: #999;\n  stroke-opacity: .6;\n}\n\n</style>\n<body>\n<div id = \"myDiv\"></div>\n<script>\n$(document).ready(function(){\n\tvar width = 960,\n\t    height = 800;\n\n\tvar force = d3.layout.force()\n\t    .charge(-120)\n\t    .linkDistance(300)\n\t    .size([width, height]);\n\n\tvar svg = d3.select(\"#myDiv\").append(\"svg\")\n\t    .attr(\"width\", width)\n\t    .attr(\"height\", height);\n\n\n\tvar linkExists = function(source,target)\n\t{\n\t\tfor(var key in graph.links){\n\t\t\tif((source == graph.links[key].source && target == graph.links[key].target)\n\t\t\t\t||(target == graph.links[key].source && source == graph.links[key].target))\n\t\t\t{\n\t\t\t\treturn key;\n\t\t\t}\n\t\t}\n\t\treturn false;\n\t};\n\n\n\tvar graph = {\n\t\t\"nodes\":[],\n\t\t\"links\":[]\n\t};\n\n\n\n\n\tvar gamesData = {{{data}}};\n\tvar pushedPlayers = [];\n\n\tfor(var counter = 0; counter<gamesData.games.length; counter++)\n\t{\n\t\tif(pushedPlayers.indexOf(gamesData.games[counter].players.home[0]) == -1)\n\t\t{\n\t\t\tgraph.nodes.push({\"name\":gamesData.games[counter].players.home[0]});\n\t\t\tpushedPlayers.push(gamesData.games[counter].players.home[0]);\n\t\t}\n\t\tif(pushedPlayers.indexOf(gamesData.games[counter].players.home[1]) == -1)\n\t\t{\n\t\t\tgraph.nodes.push({\"name\":gamesData.games[counter].players.home[1]});\n\t\t\tpushedPlayers.push(gamesData.games[counter].players.home[1]);\n\t\t}\n\t\tif(pushedPlayers.indexOf(gamesData.games[counter].players.visitors[0]) == -1)\n\t\t{\n\t\t\tgraph.nodes.push({\"name\":gamesData.games[counter].players.visitors[0]});\n\t\t\tpushedPlayers.push(gamesData.games[counter].players.visitors[0]);\n\t\t}\n\t\tif(pushedPlayers.indexOf(gamesData.games[counter].players.visitors[1]) == -1)\n\t\t{\n\t\t\tgraph.nodes.push({\"name\":gamesData.games[counter].players.visitors[1]});\n\t\t\tpushedPlayers.push(gamesData.games[counter].players.visitors[1]);\n\t\t}\n\t\t\n\n\t\tvar doesLinkExist = linkExists(pushedPlayers.indexOf(gamesData.games[counter].players.home[0]),pushedPlayers.indexOf(gamesData.games[counter].players.home[1]))\n\t\tif(doesLinkExist)\n\t\t{\n\t\t\tif(gamesData.games[counter].score.home == 5)\n\t\t\t{graph.links[doesLinkExist].value +=2;}\n\t\t\telse{graph.links[doesLinkExist].value -=2;}\n\t\t}\n\t\telse\n\t\t{\n\t\t\tif(gamesData.games[counter].score.home == 5)\n\t\t\t{\n\t\t\t\tgraph.links.push({\"source\":pushedPlayers.indexOf(gamesData.games[counter].players.home[0]),\"target\":pushedPlayers.indexOf(gamesData.games[counter].players.home[1]),\"value\":2});\t\n\t\t\t}\n\t\t\telse\n\t\t\t{\n\t\t\t\tgraph.links.push({\"source\":pushedPlayers.indexOf(gamesData.games[counter].players.home[0]),\"target\":pushedPlayers.indexOf(gamesData.games[counter].players.home[1]),\"value\":-2});\t\n\t\t\t}\n\t\t}\n\t\tvar doesLinkExist = linkExists(pushedPlayers.indexOf(gamesData.games[counter].players.visitors[0]),pushedPlayers.indexOf(gamesData.games[counter].players.visitors[1]))\n\t\tif(doesLinkExist)\n\t\t{\n\t\t\tif(gamesData.games[counter].score.visitors == 5)\n\t\t\t{\n\t\t\t\tgraph.links[doesLinkExist].value +=2;\n\n\t\t\t\tif(graph.links[doesLinkExist].value == 0){graph.links.splice(doesLinkExist,parseInt(doesLinkExist)+1);}\n\t\t\t}\n\t\t\telse{\n\t\t\t\tgraph.links[doesLinkExist].value -=2;\n\t\t\t\tif(graph.links[doesLinkExist].value == 0){graph.links.splice(doesLinkExist,parseInt(doesLinkExist)+1);}\n\t\t\t}\n\t\t}\n\t\telse\n\t\t{\n\t\t\tif(gamesData.games[counter].score.visitors == 5)\n\t\t\t{\n\t\t\t\tgraph.links.push({\"source\":pushedPlayers.indexOf(gamesData.games[counter].players.visitors[0]),\"target\":pushedPlayers.indexOf(gamesData.games[counter].players.visitors[1]),\"value\":2});\t\n\t\t\t}\n\t\t\telse\n\t\t\t{\n\t\t\t\tgraph.links.push({\"source\":pushedPlayers.indexOf(gamesData.games[counter].players.visitors[0]),\"target\":pushedPlayers.indexOf(gamesData.games[counter].players.visitors[1]),\"value\":-2});\t\n\t\t\t}\n\t\t}\n\t}\n\nvar padding = 50, // separation between circles\n    radius=15;\nfunction collide(alpha) {\n  var quadtree = d3.geom.quadtree(graph.nodes);\n  return function(d) {\n    var rb = 2*radius + padding,\n        nx1 = d.x - rb,\n        nx2 = d.x + rb,\n        ny1 = d.y - rb,\n        ny2 = d.y + rb;\n    quadtree.visit(function(quad, x1, y1, x2, y2) {\n      if (quad.point && (quad.point !== d)) {\n        var x = d.x - quad.point.x,\n            y = d.y - quad.point.y,\n            l = Math.sqrt(x * x + y * y);\n          if (l < rb) {\n           l = (l - rb) / l * alpha;\n           d.x -= x *= l;\n           d.y -= y *= l;\n           quad.point.x += x;\n           quad.point.y += y;\n         }\n       }\n       return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;\n     });\n   };\n }\n\tforce\n\t    .nodes(graph.nodes)\n\t    .links(graph.links)\n\t    .start();\n\n\tvar link = svg.selectAll(\".link\")\n\t    .data(graph.links)\n\t    .enter().append(\"line\")\n\t    .attr(\"class\", \"link\")\n\t    .style(\"stroke-width\", function(d) { return Math.abs(d.value); })\n\t    .style(\"stroke\", function(d){\n\t    \tif(d.value>0){return \"green\";}\n\t      \telse{return \"red\";}});\n\t      \n\tvar node = svg.selectAll(\".node\")\n\t    .data(graph.nodes)\n\t    .enter().append(\"g\")\n\t    .attr(\"class\", \"node\")\n\t    .call(force.drag);\n\n\tnode.append(\"circle\")\n\t    .attr(\"r\", 15)\n\t    .style(\"fill\", \"grey\");\n\n\tnode.append(\"text\")\n\t  .attr(\"dx\", 20)\n\t  .attr(\"dy\", \".35em\")\n\t  .text(function(d) { return d.name })\n\t  .style(\"stroke\", \"white\");\n\n\n\n\n\t  force.on(\"tick\", function() {\n\t    link.attr(\"x1\", function(d) { return d.source.x; })\n\t        .attr(\"y1\", function(d) { return d.source.y; })\n\t        .attr(\"x2\", function(d) { return d.target.x; })\n\t        .attr(\"y2\", function(d) { return d.target.y; });\n\n\t    node.attr(\"cx\", function(d) { return d.x; })\n\t        .attr(\"cy\", function(d) { return d.y; });\n\n\t    link.attr(\"x1\", function (d) {\n\t        return d.source.x;\n\t    })\n\t        .attr(\"y1\", function (d) {\n\t        return d.source.y;\n\t    })\n\t        .attr(\"x2\", function (d) {\n\t        return d.target.x;\n\t    })\n\t        .attr(\"y2\", function (d) {\n\t        return d.target.y;\n\t    });\n\t    d3.selectAll(\"circle\").attr(\"cx\", function (d) {\n\t        return d.x;\n\t    })\n\t        .attr(\"cy\", function (d) {\n\t        return d.y;\n\t    });\n\t    d3.selectAll(\"text\").attr(\"x\", function (d) {\n\t        return d.x;\n\t    })\n\t        .attr(\"y\", function (d) {\n\t        return d.y;\n\t    });\n\t             node.each(collide(0.5)); //Added \n\n\n\t  });\n  /*\tforce.on(\"tick\", function () {\n\t    link.attr(\"x1\", function (d) {\n\t        return d.source.x;\n\t    })\n\t        .attr(\"y1\", function (d) {\n\t        return d.source.y;\n\t    })\n\t        .attr(\"x2\", function (d) {\n\t        return d.target.x;\n\t    })\n\t        .attr(\"y2\", function (d) {\n\t        return d.target.y;\n\t    });\n\t    node.attr(\"cx\", function (d) {\n\t        return d.x;\n\t    })\n\t        .attr(\"cy\", function (d) {\n\t        return d.y;\n\t    });\n     node.each(collide(0.5)); //Added \n});*/\n});\n</script>\n</body>",
+       "tos.html": "<section id=\"content\" class=\"solo text\">\n  <aside>\n      <article>\n        <hgroup>\n            <h1 class=\"h1\">{{locales.tos.h1}}</h1>\n        </hgroup>\n        <p>{{locales.tos.text}}</p>\n    </article>\n  </aside>\n</section>",
+       "live.html": "<section id=\"content\" class=\"home\">\n  <aside>\n    <section id=\"game\">\n      <div class=\"scoreboard\">\n        {{#scoreboard}}\n          {{^inverted}}\n            <div id=\"scorehome\" class=\"scorecard full\"></div>\n            <div id=\"scorevisitors\" class=\"scorecard full\"></div>\n          {{/inverted}}\n          {{#inverted}}\n            <div id=\"scorevisitors\" class=\"scorecard full\"></div>\n            <div id=\"scorehome\" class=\"scorecard full\"></div>\n          {{/inverted}}\n        {{/scoreboard}}\n      </div>\n      <time>&nbsp;</time>\n      <ol>\n        <li><a href=\"#\"></a></li>\n        <li><a href=\"#\"></a></li>\n        <li><a href=\"#\"></a></li>\n        <li><a href=\"#\"></a></li>\n      </ol>\n    </section>\n    <section id=\"feed\"></section>\n  </aside>\n  <bside>\n    <hgroup>\n      <h1 class=\"h1\">{{locales.live.top10}}</h1>\n    </hgroup>\n    <ol>\n      {{#players}}\n        <li {{#position}}data-rank=\"{{position}}\"{{/position}} data-score=\"{{score}}\"><a href=\"#!/statistic/{{name}}\">{{name}}</a></li>\n      {{/players}}\n    </ol>\n    <div><a href=\"#!/table\">{{locales.live.top10.fulltable}}</a></div>\n  </bside>\n</section>",
+       "user.html": "<section id=\"content\" class=\"userdetail\">\n  {{#user}}\n    <aside>\n      <div id=\"summary\">\n        <hgroup>\n          <h1 class=\"h1\" {{#avatar}}style=\"background-image:url({{avatar}});\"{{/avatar}}>{{name}}</h1>\n          <h2 class=\"h2\">{{locales.user.registered}} {{registered}}</h2>\n        </hgroup>\n        <div class=\"meter h1\">{{locales.user.rank}} <span>{{rank}}</span></div>\n        <div class=\"progress\">{{score}} {{locales.user.points}}</div>\n      </div>\n      <ul id=\"nemesis\">\n        <li>\n          {{#nemesis}}\n            <hgroup>\n              <h1 class=\"h1\">{{locales.user.nemesis.hl}}</h1>\n            </hgroup>\n            <a href=\"#!/statistic/{{name}}\" class=\"user\" {{#avatar}}style=\"background-image:url({{avatar}});\"{{/avatar}}>{{{name}}<br />{{quote}}% {{locales.user.nemesis.lost}}</a>\n          {{/nemesis}}\n        </li>\n        <li>\n          {{#buddy}}\n            <hgroup>\n              <h1 class=\"h1\">{{locales.user.buddy.hl}}</h1>\n            </hgroup>\n            <a href=\"#!/statistic/{{name}}\" class=\"user\" {{#avatar}}style=\"background-image:url({{avatar}});\"{{/avatar}}>{{name}}<br />{{quote}}% {{locales.user.buddy.won}}</a>\n          {{/buddy}}\n        </li>\n        <li>\n          {{#challenger}}\n            <hgroup>\n              <h1 class=\"h1\">{{locales.user.challenger.hl}}</h1>\n            </hgroup>\n            <a href=\"#!/statistic/{{name}}\" class=\"user\" {{#avatar}}style=\"background-image:url({{avatar}});\"{{/avatar}}>{{name}}<br />{{locales.user.challenger.rank}} {{rank}}</a>\n          {{/challenger}}\n        </li>\n      </ul>\n      <div id=\"performance\">\n        {{#graph}}\n          <hgroup>\n            <h1 class=\"h1\">{{locales.user.statistic.hl}}</h1>\n          </hgroup>\n          <img src=\"https://chart.googleapis.com/chart?chs=595x115&amp;cht=lc&amp;chxt=y&amp;chxl=0:|{{low}}|0|{{high}}&amp;chm=r,82bb3750,0,0.495,0.505&amp;chd=t:{{ranks}}&amp;chds={{low}},{{high}}&amp;chls=2&amp;chco=82bb37&amp;chf=bg,s,00000000\" width=\"595\" height=\"115\" />\n        {{/graph}}\n      </div>\n      <div id=\"gamesgoals\">\n        <div>\n          <hgroup>\n            <h1 class=\"h1\">{{locales.user.games.hl}}</h1>\n          </hgroup>\n          {{#games}}\n            <dl>\n              {{#won}}\n                <dt>{{locales.user.games.won}}</dt>\n                <dd><span class=\"meter more\" data-value=\"{{amount}}\" data-percentage=\"{{percentage}}\"></span></dd>\n              {{/won}}\n              {{#lost}}\n                <dt>{{locales.user.games.lost}}</dt>\n                <dd><span class=\"meter less\" data-value=\"{{amount}}\" data-percentage=\"{{percentage}}\"></span></dd>\n              {{/lost}}\n            </dl>\n          {{/games}}\n        </div>\n        <div>\n          <hgroup>\n            <h1 class=\"h1\">{{locales.user.goals.hl}}</h1>\n          </hgroup>\n          {{#goals}}\n            <dl>\n              {{#scored}}\n                <dt>{{locales.user.goals.scored}}</dt>\n                <dd><span class=\"meter more\" data-value=\"{{amount}}\" data-percentage=\"{{percentage}}\"></span></dd>\n              {{/scored}}\n              {{#conceded}}\n                <dt>{{locales.user.goals.conceded}}</dt>\n                <dd><span class=\"meter less\" data-value=\"{{amount}}\" data-percentage=\"{{percentage}}\"></span></dd>\n              {{/conceded}}\n            </dl>\n          {{/goals}}\n        </div>\n      </div>\n    </aside>\n    <bside>\n      <nav id=\"tabnav\">\n        <a href=\"#\" class=\"active\">{{locales.user.games.nav.lastgames}}</a>\n        <!-- a href=\"#\">{{locales.user.games.nav.lastmonth}}</a -->\n        <!-- a href=\"#\">{{locales.user.games.nav.allgames}}</a -->\n      </nav>\n      <ol id=\"history\">\n        {{#history}}\n          <li>\n            <div class=\"score\">{{#goals}}{{home}}:{{visitors}}{{/goals}}</div>\n            <ol>\n              {{#players}}\n                {{#home}}\n                  <li>{{#.}}<a href=\"#!/statistic/{{.}}\">{{/.}}{{.}}{{#.}}</a>{{/.}}</li>\n                {{/home}}\n                {{#visitors}}\n                  <li>{{#.}}<a href=\"#!/statistic/{{.}}\">{{/.}}{{.}}{{#.}}</a>{{/.}}</li>\n                {{/visitors}}\n              {{/players}}\n            </ol>\n            <time>{{locales.user.games.date}}: {{end}}</time>\n            <div class=\"points\">{{score}} {{locales.user.games.points}}</div>\n          </li>\n        {{/history}}\n      </ol>\n    </bside>\n  {{/user}}\n</section>",
+       "statistic": "<section id=\"content\" class=\"userdetail\">\n  {{#stats}}\n    <aside>\n      <div id=\"summary\">\n        <hgroup>\n          <h1 class=\"h1\">{{locales.statistic}}</h1>\n          <h2 class=\"h2\">{{locales.statistic.started.start}} {{started}} {{locales.statistic.started.end}}</h2>\n        </hgroup>\n      </div>\n      <ul id=\"nemesis\">\n        {{#avg}}\n          <li>\n            <hgroup>\n              <h1 class=\"h1\">{{locales.statistic.gamesperday}}</h1>\n            </hgroup>\n            {{gamesPerDay}}\n          </li>\n          <li>\n            <hgroup>\n              <h1 class=\"h1\">{{locales.statistic.durationpergame}}</h1>\n            </hgroup>\n            {{durationPerGame}} {{locales.statistic.durationpergame.unit}}\n          </li>\n          <li>\n            <hgroup>\n              <h1 class=\"h1\">{{locales.statistic.durationperday}}</h1>\n            </hgroup>\n            {{durationPerDay}} {{locales.statistic.durationperday.unit}}\n          </li>\n        {{/avg}}\n      </ul>\n      <!--div id=\"performance\">\n        <hgroup>\n          <h1 class=\"h1\">Kicker Auslastung</h1>\n        </hgroup>\n        <img src=\"https://chart.googleapis.com/chart?chs=595x115&amp;chco=82bb37&amp;chxt=x,y&amp;chxl=0:%7CJan%7CFeb%7CMarch%7CApril%7CMay%7C1:%7CMin%7CMax&amp;cht=lc&amp;chd=s:cEAELFJHHHKUju9uuXUc&amp;chls=2.0&amp;chf=bg,s,00000000&amp;chls=3&amp;chxs=2,0000DD,13,-1,t,FF0000\" alt=\"\" width=\"595\" height=\"115\" />\n      </div-->\n      <div id=\"gamesgoals\">\n        <div>\n          <hgroup>\n            <h1 class=\"h1\">{{locales.statistic.goals.hl}}</h1>\n          </hgroup>\n          {{#goals}}\n            <dl>\n              {{#home}}\n                <dt>{{locales.statistic.goals.home}}</dt>\n                <dd><span class=\"meter more\" data-value=\"{{amount}}\" data-percentage=\"{{percentage}}\"></span></dd>\n              {{/home}}\n              {{#visitors}}\n                <dt>{{locales.statistic.goals.visitors}}</dt>\n                <dd><span class=\"meter less\" data-value=\"{{amount}}\" data-percentage=\"{{percentage}}\"></span></dd>\n              {{/visitors}}\n            </dl>\n          {{/goals}}\n        </div>\n        <div>\n          <hgroup>\n            <h1 class=\"h1\">{{locales.statistic.victories.hl}}</h1>\n          </hgroup>\n          {{#victories}}\n            <dl>\n              {{#home}}\n                <dt>{{locales.statistic.victories.home}}</dt>\n                <dd><span class=\"meter more\" data-value=\"{{amount}}\" data-percentage=\"{{percentage}}\"></span></dd>\n              {{/home}}\n              {{#visitors}}\n                <dt>{{locales.statistic.victories.visitors}}</dt>\n                <dd><span class=\"meter less\" data-value=\"{{amount}}\" data-percentage=\"{{percentage}}\"></span></dd>\n              {{/visitors}}\n            </dl>\n          {{/victories}}\n        </div>\n      </div>\n      <dl id=\"stats\">\n        {{#total}}\n          <dt>{{locales.statistic.stats.total.days}}</dt><dd>{{days}}</dd>\n          <dt>{{locales.statistic.stats.total.games}}</dt><dd>{{games}}</dd>\n          <dt>{{locales.statistic.stats.total.goals}}</dt><dd>{{goals}}</dd>\n        {{/total}}\n        {{#players}}\n          <dt>{{locales.statistic.stats.players.days}}</dt><dd>{{amount}}</dd>\n          <dt>{{locales.statistic.stats.players.mostactive}}</dt><dd>{{#mostactive}}<a href=\"#!/statistic/{{name}}\">{{name}}</a> ({{games}} {{locales.statistic.stats.players.mostactive.unit}}){{/mostactive}}</dd>\n          <dt>{{locales.statistic.stats.players.topscorer}}</dt><dd>{{#topscorer}}<a href=\"#!/statistic/{{name}}\">{{name}}</a> ({{diff}} {{locales.statistic.stats.players.topscorer.unit}}){{/topscorer}}</dd>\n          <dt>{{locales.statistic.stats.players.loser}}</dt><dd>{{#loser}}<a href=\"#!/statistic/{{name}}\">{{name}}</a> ({{diff}} {{locales.statistic.stats.players.loser.unit}}){{/loser}}</dd>\n        {{/players}}\n      </dl>\n    </aside>\n    <bside>\n      <nav id=\"tabnav\">\n        <a href=\"#\" class=\"active\">{{locales.statistic.games.nav.lastgames}}</a>\n        <!--a href=\"#\">Die letzten Tweets</a-->\n      </nav>\n      <ol id=\"history\">\n        {{#games}}\n          <li>\n            <div class=\"score\">{{#goals}}{{home}}:{{visitors}}{{/goals}}</div>\n            <ol>\n              {{#players}}\n                {{#home}}\n                  <li>{{#.}}<a href=\"#!/statistic/{{.}}\">{{/.}}{{.}}{{#.}}</a>{{/.}}</li>\n                {{/home}}\n                {{#visitors}}\n                  <li>{{#.}}<a href=\"#!/statistic/{{.}}\">{{/.}}{{.}}{{#.}}</a>{{/.}}</li>\n                {{/visitors}}\n              {{/players}}\n            </ol>\n            <time>{{locales.statistic.games.date}}: {{end}}</time>\n          </li>\n        {{/games}}\n      </ol>\n    </bside>\n  {{/stats}}\n</section>",
+       "table.html": "<section id=\"content\" class=\"league solo\">\n  <aside>\n    <h2 class=\"h1\">{{locales.table.league}}</h2>\n    <table>\n      <thead>\n        <tr>\n          <th></th>\n          <th>{{locales.table.league.col.header.player}}</th>\n          <th>{{locales.table.league.col.header.goals}}</th>\n          <th>{{locales.table.league.col.header.diff}}</th>\n          <th>{{locales.table.league.col.header.points}}</th>\n          <th>{{locales.table.league.col.header.victories}}</th>\n          <th>{{locales.table.league.col.header.defeats}}</th>\n        </tr>\n      </thead>\n      <tbody>\n        {{#players}}\n          <tr>\n            <td>{{#position}}{{position}}.{{/position}}</td>\n            <td><a href=\"#!/statistic/{{name}}\">{{name}}</a></td>\n            {{#goals}}\n              <td>{{scored}}:{{conceded}}</td>\n              <td>{{diff}}</td>\n            {{/goals}}\n            <td>{{score}}</td>\n            {{#games}}\n              <td>{{won}}</td>\n              <td>{{lost}}</td>\n            {{/games}}\n          </tr>\n        {{/players}}\n      </tbody>\n    </table>\n  </aside>\n<!--   <bside>\n    <h2 class=\"h1\">{{locales.table.league.col.header.badges}}</h2>\n    <ul>\n      <li class=\"hunter\">\n        <h3 class=\"h2\">{{locales.table.badge.hunter}}</h3>\n        <p>{{locales.table.badge.hunter.message}}</p>\n        <p>@s2kicker  |  17.05.2011</p>\n      </li>\n      <li class=\"hattrik\">\n        <h3 class=\"h2\">{{locales.table.badge.hattrik}}</h3>\n        <p>{{locales.table.badge.hattrik.message}}</p>\n        <p>@s2kicker  |  17.05.2011</p>\n      </li>\n      <li class=\"speedy\">\n        <h3 class=\"h2\">{{locales.table.badge.speedy}}</h3>\n        <p>{{locales.table.badge.speedy.message}}</p>\n        <p>@s2kicker  |  17.05.2011</p>\n      </li>\n      <li class=\"patience\">\n        <h3 class=\"h2\">{{locales.table.badge.patience}}</h3>\n        <p>{{locales.table.badge.patience.message}}</p>\n        <p>@s2kicker  |  17.05.2011</p>\n      </li>\n      <li class=\"fan\">\n        <h3 class=\"h2\">{{locales.table.badge.fan}}</h3>\n        <p>{{locales.table.badge.fan.message}}</p>\n        <p>@s2kicker  |  17.05.2011</p>\n      </li>\n      <li class=\"lantern\">\n        <h3 class=\"h2\">{{locales.table.badge.lantern}}</h3>\n        <p>{{locales.table.badge.lantern.message}}</p>\n        <p>@s2kicker  |  17.05.2011</p>\n      </li>\n    </ul>\n  </bside> -->\n</section>",
+       "guide.html": "<section id=\"content\" class=\"solo text\">\n  <aside>\n      <article>\n        <hgroup>\n            <h1 class=\"h1\">{{locales.guide.app.h1}}</h1>\n        </hgroup>\n        <p>{{locales.guide.app.text1}}</p>\n        <p>{{locales.guide.app.text2}}</p>\n        <p>{{locales.guide.app.text3}}</p>\n        <p>{{locales.guide.app.text4}}</p>\n        <p>{{locales.guide.app.text5}}</p>\n    </article>\n    <article>\n        <hgroup>\n            <h1 class=\"h1\">{{locales.guide.league.h1}}</h1>\n        </hgroup>\n        <p>{{locales.guide.league.text1}}</p>\n        <p>{{locales.guide.league.text2}}</p>\n        <p>{{locales.guide.league.text3}}</p>\n        <ul>\n            <li>{{locales.guide.league.li1}}</li>\n            <li>{{locales.guide.league.li2}}</li>\n            <li>{{locales.guide.league.li3}}</li>\n        </ul>\n        <p>{{locales.guide.league.text4}}</p>\n        <p>{{locales.guide.league.text5}}</p>\n    </article>\n    <article>\n        <hgroup>\n            <h1 class=\"h1\">{{locales.guide.rating.h1}}</h1>\n        </hgroup>\n        <p>{{locales.guide.rating.text1}}</p>\n        <p>{{locales.guide.rating.text2}}</p>\n      </article>\n  </aside>\n</section>"
+   },
+   "views": {
+       "by_rfid": {
+           "map": "function(doc) {  if (doc.type === 'player') {emit(doc.rfid, {'id': doc._id,'name': doc.name,'rfid': doc.rfid});}}"
+       },
+       "perfect_games": {
+           "map": "function(doc) {  if (doc.type === 'game' && doc.players.home.length && doc.players.visitors.length) {var score = doc.goals.reduce(function(prev, curr) {prev[curr.scorer]+=curr.value; return prev; }, {home: 0, visitors: 0});    if(score.home <= 0 || score.visitors <= 0) {                   emit(null, {'score': score, 'players': doc.players});    }    }}"
+       },
+       "players": {
+           "map": "function(doc) {  if (doc.type === 'player') {    emit(doc._id, doc);  }}"
+       },
+       "ranked_games": {
+           "map": "function(doc) {  if (doc.type === 'game' && doc.players.home.length && doc.players.visitors.length && doc.ranked) {    emit(doc.end, doc);  }}"
+       },
+       "unranked_games": {
+           "map": "function(doc) {  if (doc.type === 'game' && doc.players.home.length && doc.players.visitors.length && !doc.ranked) {    emit(doc.end, doc);  }}"
+       }
+   },
+   "validate_doc_updates": "function(newDoc, oldDoc, userCtx) {  log('OLD: ' + JSON.stringify(newDoc))  log('NEW: ' + JSON.stringify(oldDoc))  if (!~userCtx.roles.indexOf('_admin')) {    throw({unauthorized: 'You are not authorized to modify this document'});  }}",
+   "_attachments": {
+       "basic.less": {
+           "content_type": "application/octet-stream",
+           "revpos": 20,
+           "digest": "md5-Tlg7eIK77kM9LwZm/Dl01A==",
+           "length": 4326,
+           "stub": true
+       },
+       "basic.js": {
+           "content_type": "application/x-javascript",
+           "revpos": 19,
+           "digest": "md5-l4mDYwu5z2+Mf+f9/5L46Q==",
+           "length": 657,
+           "stub": true
+       },
+       "basic-min.js": {
+           "content_type": "application/x-javascript",
+           "revpos": 18,
+           "digest": "md5-eQXnGY8Aw2qWafcYrcwtCQ==",
+           "length": 142773,
+           "stub": true
+       },
+       "loader.js": {
+           "content_type": "application/x-javascript",
+           "revpos": 12,
+           "digest": "md5-yem/ov9GRw4y1UjJT/jGDA==",
+           "length": 604,
+           "stub": true
+       }
+   }
+}
