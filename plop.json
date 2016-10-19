@@ -1,0 +1,27 @@
+{
+  "error":"render_error","reason":"function raised error: (new TypeError(\"this.templates is undefined\", \"lists.live\", 1)) 
+stacktrace: ([object Object],[object Object])@lists.live:1
+runList(function (head, req) {
+  start({
+  headers: {
+  'content-type': \"text/html\"}});var mustache = require(\"lib/mustache\"), template = this.templates['live.html'], config = this.config, locales = this.resources[\"locales_\" + config.locale];var data = {
+scoreboard: config.scoreboard, players: []};for (var key in locales) {
+  data[\"locales.\" + key] = locales[key];}var row;while ((row = getRow())) {
+data.players.push(row.value);}data.players.sort(function (a, b) {
+return a.score > b.score ? -1 : a.score < b.score ? 1 : 0;});data.players.length > 10 && (data.players.length = 10);var pos = 0, prev;for (var i = 0; i < data.players.length; ++i) {
+  var player = data.players[i];++pos;if (player.score != prev) {
+player.position = pos;}prev = player.score;}return mustache.to_html(template, data);},[object Object],[object Array])@/usr/local/Cellar/couchdb/1.6.1_6/share/couchdb/server/main.js:989
+(function (head, req) {
+  start({
+  headers: {
+  'content-type': \"text/html\"}});var mustache = require(\"lib/mustache\"), template = this.templates['live.html'], config = this.config, locales = this.resources[\"locales_\" + config.locale];var data = {
+scoreboard: config.scoreboard, players: []};for (var key in locales) {
+  data[\"locales.\" + key] = locales[key];}var row;while ((row = getRow())) {
+data.players.push(row.value);}data.players.sort(function (a, b) {
+return a.score > b.score ? -1 : a.score < b.score ? 1 : 0;});data.players.length > 10 && (data.players.length = 10);var pos = 0, prev;for (var i = 0; i < data.players.length; ++i) {
+  var player = data.players[i];++pos;if (player.score != prev) {
+player.position = pos;}prev = player.score;}return mustache.to_html(template, data);},[object Object],[object Array])@/usr/local/Cellar/couchdb/1.6.1_6/share/couchdb/server/main.js:1036
+(\"_design/league\",[object Array],[object Array])@/usr/local/Cellar/couchdb/1.6.1_6/share/couchdb/server/main.js:1517
+()@/usr/local/Cellar/couchdb/1.6.1_6/share/couchdb/server/main.js:1562
+@/usr/local/Cellar/couchdb/1.6.1_6/share/couchdb/server/main.js:1573
+"}

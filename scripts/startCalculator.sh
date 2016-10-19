@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Base dir
-export DIR="/opt/digitalfoosball"
+export DIR="/Users/Manu/workspace/Ruby/cybernatedfoosball"
 
 cd "$DIR/league/lib"
 

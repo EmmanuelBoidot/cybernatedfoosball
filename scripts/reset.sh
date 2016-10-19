@@ -5,7 +5,7 @@
 #If using user/pass modify: http://<user>:<pass>@localhost:5984
 export COUCH="http://localhost:5984"
 #Base dir
-export DIR="/opt/digitalfoosball"
+export DIR="/Users/Manu/workspace/Ruby/cybernatedfoosball"
 
 curl -X DELETE "$COUCH/digitalfoosball"
 curl -X PUT "$COUCH/digitalfoosball"

@@ -1,0 +1,18 @@
+{
+   "_id": "78de60fc220fc2440346166c05001225",
+   "_rev": "5-1db560f22a681decae0538ddd4885c53",
+   "type": "player",
+   "name": "tobias roth",
+   "rfid": 0,
+   "games": {
+       "won": 0,
+       "lost": 0
+   },
+   "graph": [
+   ],
+   "history": [
+       {
+           "score": -5
+       }
+   ]
+}
